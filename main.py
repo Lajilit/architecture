@@ -1,15 +1,19 @@
 from wsgiref.simple_server import make_server
 
-from framework import front_controllers, Application
+from framework import Application
 
 from my_site.core.urls import urlpatterns
 
+
+def check_token(request, env):
+    token = env.get("HTTP_AUTHORIZATION")
+    if token:
+        request["is_authorized"] = True
+    else:
+        request["is_authorized"] = False
+
+
+front_controllers = [check_token]
+
+
 application = Application(urlpatterns, front_controllers)
-
-if __name__ == "__main__":
-    host = "127.0.0.1"
-    port = "80"
-
-    with make_server(host, port, application) as http:
-        print(f"Server started on {host}:{port}")
-        http.serve_forever()
