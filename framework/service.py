@@ -11,5 +11,4 @@ def render_template(template_name, **kwargs):
 
     with open(path, encoding="utf-8") as file:
         template = Template(file.read())
-
         return template.render(**kwargs)

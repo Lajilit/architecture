@@ -1,4 +1,17 @@
 from framework import render_template
+from framework.request import Request
+from framework.response import Response
+from framework.views import View
+
+
+class MainView(View):
+    def run(self, request: Request):
+        context = {
+            "title": "Main page",
+            "text": "Main page",
+            "description": "Some text",
+        }
+        return Response(render_template("index.html", context=context))
 
 
 def main_page(request):

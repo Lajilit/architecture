@@ -1,5 +1,3 @@
-from wsgiref.simple_server import make_server
-
 from framework import Application
 
 from my_site.core.urls import urlpatterns
