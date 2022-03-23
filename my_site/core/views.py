@@ -1,12 +1,13 @@
 from framework import render_template
-from framework.request import Request
 from framework.response import Response
 from framework.views import View
 
 
 class MainView(View):
-    def run(self, request: Request):
+    @staticmethod
+    def get(request):
         context = {
+            "is_authorized": request.is_authorized,
             "title": "Main page",
             "text": "Main page",
             "description": "Some text",
@@ -14,26 +15,22 @@ class MainView(View):
         return Response(render_template("index.html", context=context))
 
 
-def main_page(request):
-    context = {
-        "has_token": request["is_authorized"],
-        "title": "Main page",
-        "text": "Main page",
-        "description": "Some text",
-    }
-    code = "200 OK"
-    return code, render_template("index.html", context=context)
+class AboutView(View):
+    @staticmethod
+    def get(request):
+        context = {
+            "is_authorized": request.is_authorized,
+            "title": "About us",
+            "text": "About us",
+            "description": "Some text"}
+        return Response(render_template("about.html", context=context))
 
 
-def about_page(request):
-    context = {"title": "About us", "text": "About us", "description": "Some text"}
-    code = "200 OK"
-    return code, render_template("index.html", context=context)
+class ContactsView(View):
 
-
-def contacts_page(request):
-    if request.get('method') == 'POST':
-        data = request.get("data")
+    @staticmethod
+    def post(request):
+        data = request.data
         title = data.get("title")
         text = data.get("text")
         email = data.get("email")
@@ -41,11 +38,23 @@ def contacts_page(request):
               f"Тема: {title}\n"
               f"Текст {text}")
 
-    context = {
-        "title": "Contacts",
-        "text": "Our contacts",
-        "email": "example123@gmail.com",
-        "phone": "+7 800 123-45-67",
-    }
-    code = "200 OK"
-    return code, render_template("contacts.html", context=context)
+        context = {
+            "is_authorized": request.is_authorized,
+            "title": "Thank you",
+            "text": "We received your message"
+        }
+
+        return Response(render_template("thanks.html", context=context))
+
+    @staticmethod
+    def get(request):
+        context = {
+            "is_authorized": request.is_authorized,
+            "title": "Contacts",
+            "text": "Our contacts",
+            "email": "example123@gmail.com",
+            "phone": "+7 800 123-45-67",
+        }
+        return Response(render_template("contacts.html", context=context))
+
+

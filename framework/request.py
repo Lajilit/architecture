@@ -10,15 +10,19 @@ class Request:
         self.headers = self._get_headers(environ)
         self.data = self._get_request_data(environ)
         self.params = parse_qs(environ.get("QUERY_STRING"))
+        self.authorization = environ.get("HTTP_AUTHORIZATION")
+        self.is_authorized = False
 
-    def _get_headers(self, env):
+    @staticmethod
+    def _get_headers(env):
         headers = {}
         for key, value in env.items():
             if key.startswith("HTTP_"):
                 headers[key[5:]] = value
         return headers
 
-    def _get_request_data(self, env):
+    @staticmethod
+    def _get_request_data(env):
         content_length = int(env.get('CONTENT_LENGTH', '0'))
         data = env["wsgi.input"].read(content_length) if content_length > 0 else b""
         data_str = data.decode(encoding="UTF-8")

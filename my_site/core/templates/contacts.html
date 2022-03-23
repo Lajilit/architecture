@@ -8,7 +8,7 @@
     <title>{{ context.title }}</title>
 </head>
 <body>
-{% if context.has_token %}
+{% if context.is_authorized %}
 <p>Your token is ok</p>
 {% else %}
 <p>Your token is empty</p>

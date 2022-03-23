@@ -14,6 +14,8 @@ class Application:
         """
 
         request = Request(environ)
+        for controller in self.front_controllers:
+            controller(request)
         view = self.get_view(request)
         response = view.run(request)
         start_response(response.status_code, response.headers)
@@ -23,4 +25,4 @@ class Application:
         for url in self.url_patterns:
             if url.url == request.path:
                 return url.view
-        return NonFoundPageView
+        return NonFoundPageView()

@@ -9,5 +9,7 @@ from framework.urls import URL
 
 
 urlpatterns = [
-    URL("/", views.MainView())
+    URL("/", views.MainView()),
+    URL("/about/", views.AboutView()),
+    URL("/contacts/", views.ContactsView())
 ]
