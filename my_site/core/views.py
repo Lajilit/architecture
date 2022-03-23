@@ -12,7 +12,7 @@ class MainView(View):
             "text": "Main page",
             "description": "Some text",
         }
-        return Response(render_template("index.html", context=context))
+        return Response(render_template("core/index.html", context=context))
 
 
 class AboutView(View):
@@ -23,7 +23,7 @@ class AboutView(View):
             "title": "About us",
             "text": "About us",
             "description": "Some text"}
-        return Response(render_template("about.html", context=context))
+        return Response(render_template("core/about.html", context=context))
 
 
 class ContactsView(View):
@@ -44,7 +44,7 @@ class ContactsView(View):
             "text": "We received your message"
         }
 
-        return Response(render_template("thanks.html", context=context))
+        return Response(render_template("core/thanks.html", context=context))
 
     @staticmethod
     def get(request):
@@ -55,6 +55,6 @@ class ContactsView(View):
             "email": "example123@gmail.com",
             "phone": "+7 800 123-45-67",
         }
-        return Response(render_template("contacts.html", context=context))
+        return Response(render_template("core/contacts.html", context=context))
 
 
