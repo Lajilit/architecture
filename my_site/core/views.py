@@ -3,6 +3,7 @@ from framework import render_template
 
 def main_page(request):
     context = {
+        "has_token": request["is_authorized"],
         "title": "Main page",
         "text": "Main page",
         "description": "Some text",
@@ -18,6 +19,15 @@ def about_page(request):
 
 
 def contacts_page(request):
+    if request.get('method') == 'POST':
+        data = request.get("data")
+        title = data.get("title")
+        text = data.get("text")
+        email = data.get("email")
+        print(f"Получено сообщение от {email}:\n"
+              f"Тема: {title}\n"
+              f"Текст {text}")
+
     context = {
         "title": "Contacts",
         "text": "Our contacts",
