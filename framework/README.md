@@ -92,3 +92,14 @@ class SomeView(View):
 ```
 The path to the template for render_template() must be specified starting from 
 the folder specified in the TEMPLATES_DIR of the settings.py file
+
+
+###To run your application:
+1) Install gunicorn:
+` $ pip install gunicorn`
+2) Run gunicorn:
+`$ gunicorn main:application`
+
+For more information: https://docs.gunicorn.org/en/stable/index.html
+
+You can also use uWSGI: https://uwsgi-docs.readthedocs.io/en/latest/index.html
