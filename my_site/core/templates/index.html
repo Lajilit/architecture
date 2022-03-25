@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ context.title }}</title>
 </head>
 <body>
+{% if context.has_token %}
+<p>Your token is ok</p>
+{% else %}
+<p>Your token is empty</p>
+{% endif %}
 <h1>
     {{ context.text }}
 </h1>
