@@ -1,4 +1,3 @@
-from framework.request import Request
 from framework.response import Response
 
 

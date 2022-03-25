@@ -1,2 +1,2 @@
-from .core import Application
-from .service import render_template
+from .framework_core import Application
+

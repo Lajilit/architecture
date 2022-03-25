@@ -1,4 +1,4 @@
-from framework import render_template
+from framework.service import render_template
 from framework.response import Response
 from framework.views import View
 

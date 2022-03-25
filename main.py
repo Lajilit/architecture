@@ -1,6 +1,7 @@
+
 from framework import Application
 
-from my_site.core.urls import urlpatterns
+from core.urls import urlpatterns
 
 
 def check_token(request):
@@ -8,6 +9,7 @@ def check_token(request):
         request.is_authorized = True
     else:
         request.is_authorized = False
+    return request
 
 
 front_controllers = [check_token]

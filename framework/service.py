@@ -3,10 +3,11 @@ from os.path import join
 from jinja2 import FileSystemLoader, TemplateNotFound
 from jinja2.environment import Environment, Template
 
-from my_site.core.settings import INSTALLED_APPS, TEMPLATES_DIR, BASE_DIR
+from settings import INSTALLED_APPS, TEMPLATES_DIR, BASE_DIR
 
 
 def render_template(template_name, folder=TEMPLATES_DIR, **kwargs):
+    print(BASE_DIR)
     for app in INSTALLED_APPS:
         path = join(BASE_DIR, app, folder)
         env = Environment()
