@@ -96,9 +96,9 @@ the folder specified in the TEMPLATES_DIR of the settings.py file
 
 ###To run your application:
 1) Install gunicorn:
-` $ pip install gunicorn`
+` .../your_project$ pip install gunicorn`
 2) Run gunicorn:
-`$ gunicorn main:application`
+`.../your_project$ gunicorn main:application`
 
 For more information: https://docs.gunicorn.org/en/stable/index.html
 
