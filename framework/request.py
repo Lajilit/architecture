@@ -23,7 +23,7 @@ class Request:
 
     @staticmethod
     def _get_request_data(env):
-        content_length = int(env.get('CONTENT_LENGTH', '0'))
+        content_length = int(env.get("CONTENT_LENGTH", "0"))
         data = env["wsgi.input"].read(content_length) if content_length > 0 else b""
         data_str = data.decode(encoding="UTF-8")
         return parse_qs(data_str)

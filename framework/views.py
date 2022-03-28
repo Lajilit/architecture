@@ -2,8 +2,16 @@ from framework.response import Response
 
 
 class View:
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete', 'head', 'options',
-                         'trace']
+    http_method_names = [
+        "get",
+        "post",
+        "put",
+        "patch",
+        "delete",
+        "head",
+        "options",
+        "trace",
+    ]
 
     def run(self, request):
         return self.dispatch(request)
@@ -13,8 +21,9 @@ class View:
         # defer to the error handler. Also defer to the error handler if the
         # request method isn't on the approved list.
         if request.method.lower() in self.http_method_names:
-            handler = getattr(self, request.method.lower(),
-                              self.http_method_not_allowed)
+            handler = getattr(
+                self, request.method.lower(), self.http_method_not_allowed
+            )
         else:
             handler = self.http_method_not_allowed
         return handler(request)

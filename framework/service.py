@@ -7,7 +7,6 @@ from settings import INSTALLED_APPS, TEMPLATES_DIR, BASE_DIR
 
 
 def render_template(template_name, folder=TEMPLATES_DIR, **kwargs):
-    print(BASE_DIR)
     for app in INSTALLED_APPS:
         path = join(BASE_DIR, app, folder)
         env = Environment()
@@ -22,4 +21,3 @@ def render_template(template_name, folder=TEMPLATES_DIR, **kwargs):
     with open(path, encoding="utf-8") as file:
         template = Template(file.read())
         return template.render(template_name=template_name)
-

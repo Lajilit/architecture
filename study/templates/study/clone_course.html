@@ -1,0 +1,7 @@
+{% extends "study/create_course.html" %}
+{% block clone %}
+    <div><label name="old_course_type">Old course type</label><input type="text" name="old_course_type" readonly value={{context.old_course.type}}></div>
+    <div><label name="old_course_name">Old course name</label><input type="text" name="old_course_name" readonly value={{context.old_course.name}}></div>
+    <div><input type="text" name="course_type" placeholder="Course type: interactive, vebinar or recorded" value={{context.old_course.type}}></div>
+    <div><input type="text" name="course_name" placeholder="Course name" value={{context.old_course.name}}></div>
+{% endblock %}

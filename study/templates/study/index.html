@@ -1,0 +1,22 @@
+{% extends "study/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<div>
+    {% if context.courses_list %}
+    <ul>
+        {% for course in context.courses_list %}
+        <li>{{course.name }}: {{ course.type}} <button><a href="{{course.clone_url}}">Clone course</a></button></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Список курсов пуст</p>
+    {% endif %}
+    <button><a href="/create_course">Create course</a></button>
+
+</div>
+{% endblock %}
