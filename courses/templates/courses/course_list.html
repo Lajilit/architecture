@@ -1,4 +1,4 @@
-{% extends "study/base.html" %}
+{% extends "base.html" %}
 {% block title %}{{ context.title }}{% endblock %}
 
 
@@ -10,7 +10,11 @@
     {% if context.courses_list %}
     <ul>
         {% for course in context.courses_list %}
-        <li>{{course.name }}: {{ course.type}} <button><a href="{{course.clone_url}}">Clone course</a></button></li>
+        <li>{{course.id }}: {{course.name }} ({{ course.type}})
+            <button>
+                <a href="/clone_course/?course_id={{course.id}}">Clone course</a>
+            </button>
+        </li>
         {% endfor %}
     </ul>
     {% else %}

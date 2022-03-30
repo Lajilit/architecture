@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    Created course {{ context.course.name }} ({{ context.course.type }})
+</h1>
+{% endblock %}

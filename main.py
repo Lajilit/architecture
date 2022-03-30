@@ -1,6 +1,6 @@
 from framework import Application
 
-from study.urls import urlpatterns
+from core.urls import urlpatterns
 
 
 def check_token(request):

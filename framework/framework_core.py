@@ -1,4 +1,5 @@
 from framework.request import Request
+from framework.service import get_view
 from framework.views import NonFoundPageView
 
 
@@ -17,13 +18,9 @@ class Application:
         if self.front_controllers:
             for controller in self.front_controllers:
                 request = controller(request)
-        view = self.get_view(request)
+        view = get_view(request.path, self.url_patterns)
+        if not view:
+            view = NonFoundPageView()
         response = view.run(request)
         start_response(response.status_code, response.headers)
         return [response.body]
-
-    def get_view(self, request):
-        for url in self.url_patterns:
-            if url.url == request.path:
-                return url.view
-        return NonFoundPageView()
