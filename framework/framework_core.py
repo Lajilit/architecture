@@ -1,5 +1,5 @@
 from framework.request import Request
-from framework.service import get_view
+from framework.urls import get_view
 from framework.views import NonFoundPageView
 
 

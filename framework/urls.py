@@ -5,6 +5,7 @@ from framework.service import get_view
 from framework.views import View
 
 
+
 class Include:
     def __init__(self, urlpatterns: list['URL']):
         self.urlpatterns = urlpatterns
@@ -20,4 +21,4 @@ include = Include
 @dataclass
 class URL:
     url: str
-    view: Union[View, Include]
+    action: Union[View, Include]

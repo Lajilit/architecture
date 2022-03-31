@@ -6,6 +6,18 @@
            readonly hidden value={{context.old_course.id}}>
 </div>
 <div>
+    <label for="course_category">Course category</label>
+    <select id="course_category" name="course_category" required>
+        {% for category in context.categories %}
+        {% if context.old_course.category == category %}
+            <option value={{category.id}} selected>{{category.name}}</option>
+        {% else %}}
+            <option value={{category.id}}>{{category.name}}</option>
+        {% endif %}}
+        {% endfor %}
+    </select>
+</div>
+<div>
     <label for="course_type">Course type</label>
     <select id="course_type" name="course_type" required>
         {% for course_type in context.course_types %}

@@ -6,14 +6,16 @@
 <h1>
     {{ context.header }}
 </h1>
-{% if context.success %}
-<p>{{ context.success}}</p>
-{% endif %}
-{% if context.error %}
-<p>Error: {{ context.error }}</p>
-{% endif %}
 <form method="post">
     {% block clone %}
+    <div>
+        <label for="course_category">Course category</label>
+        <select id="course_category" name="course_category" required>
+            {% for category in context.categories %}
+            <option value={{category.id}}>{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
     <div>
         <label for="course_type">Course type</label>
         <select id="course_type" name="course_type" required>

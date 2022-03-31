@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% block title %}{{ context.title }}{% endblock %}
 
 
@@ -7,20 +7,20 @@
     {{ context.header }}
 </h1>
 <div>
-    {% if context.courses_list %}
+    {% if context.courses %}
     <ul>
-        {% for course in context.courses_list %}
-        <li>{{course.id }}: {{course.name }} ({{ course.type}})
+        {% for course in context.courses %}
+        <li>{{course.id }}: {{course.category.name }} : {{course.name }} ({{ course.type}})
             <button>
-                <a href="/clone_course/?course_id={{course.id}}">Clone course</a>
+                <a href="/courses/clone/?course_id={{course.id}}">Clone course</a>
             </button>
         </li>
         {% endfor %}
     </ul>
     {% else %}
-    <p>Список курсов пуст</p>
+    <p>Courses not found</p>
     {% endif %}
-    <button><a href="/create_course">Create course</a></button>
+    <button><a href="/courses/create">Create course</a></button>
 
 </div>
 {% endblock %}

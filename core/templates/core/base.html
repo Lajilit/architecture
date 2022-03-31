@@ -10,9 +10,11 @@
 
 <body>
 <header>
-    {% include "study/includes/menu.html" %}
+    {% include "core/includes/menu.html" %}
 </header>
-    {% include "study/includes/is_authorized.html" %}
+    {% include "core/includes/is_authorized.html" %}
+    {% include "core/includes/success.html" %}
+    {% include "core/includes/error.html" %}
 {% block content %}{% endblock %}
 </body>
 </html>
