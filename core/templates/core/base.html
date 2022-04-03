@@ -12,9 +12,12 @@
 <header>
     {% include "core/includes/menu.html" %}
 </header>
-    {% include "core/includes/is_authorized.html" %}
-    {% include "core/includes/success.html" %}
-    {% include "core/includes/error.html" %}
+{% include "core/includes/is_authorized.html" %}
+{% include "core/includes/error.html" %}
+{% if context.success %}
+{% include "core/includes/success.html" %}
+{% else %}
 {% block content %}{% endblock %}
+{% endif %}
 </body>
 </html>

@@ -1,5 +1,5 @@
 import copy
-from categories.models import AbstractCategory
+from categories.models import AbstractCategory, Component
 from core.errors import AlreadyExistsError, CourseTypeError
 
 
@@ -15,7 +15,7 @@ class CoursePrototypeMixin:
         return clone
 
 
-class AbstractCourse(CoursePrototypeMixin):
+class AbstractCourse(CoursePrototypeMixin, Component):
     count = 0
 
     def __init__(self, category: AbstractCategory, name: str, type: str):
@@ -35,6 +35,9 @@ class AbstractCourse(CoursePrototypeMixin):
         site.courses.append(self)
         AbstractCourse.count += 1
         self.id = self.count
+
+    def calculate(self):
+        return 1
 
 
 class InteractiveCourse(AbstractCourse):

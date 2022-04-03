@@ -10,7 +10,7 @@
     {% if context.categories %}
     <ul>
         {% for category in context.categories %}
-        <li>{{category.id }}: {{category.name }}</li>
+        <li>{{ category.name }}: {{category.self.calculate()}}</li>
         {% endfor %}
     </ul>
     {% else %}
