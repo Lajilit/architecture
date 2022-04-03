@@ -62,6 +62,3 @@ class CategoryFactory:
     def create(cls, category_name: str) -> Union[str, AbstractCategory]:
         new_category = Category(category_name)
         return new_category
-
-
-base_category = Category("base")
