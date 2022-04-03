@@ -6,7 +6,7 @@ from core.errors import AlreadyExistsError
 class AbstractCategory:
     count = 0
 
-    def __init__(self, site, name: str):
+    def __init__(self, name: str):
         self.id = None
         self.name = name
 
@@ -27,6 +27,6 @@ class Category(AbstractCategory):
 
 class CategoryFactory:
     @classmethod
-    def create(cls, site, category_name: str) -> Union[str, AbstractCategory]:
-        new_category = Category(site, category_name)
+    def create(cls, category_name: str) -> Union[str, AbstractCategory]:
+        new_category = Category(category_name)
         return new_category

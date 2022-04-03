@@ -18,7 +18,7 @@ class CoursePrototypeMixin:
 class AbstractCourse(CoursePrototypeMixin):
     count = 0
 
-    def __init__(self, site, category: AbstractCategory, name: str, type: str):
+    def __init__(self, category: AbstractCategory, name: str, type: str):
         self.id = None
         self.category = category
         self.name = name
@@ -52,10 +52,10 @@ class CourseFactory:
     }
 
     @classmethod
-    def create(cls, site, category, type, name):
+    def create(cls, category, type, name):
         if not cls.course_types.get(type):
             raise CourseTypeError("Wrong course type")
         new_course = cls.course_types[type](
-            site, category, name, type
+            category, name, type
         )
         return new_course

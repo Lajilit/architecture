@@ -14,13 +14,13 @@ class CustomSite:
         self.categories = []
 
     def create_user(self, user_name, user_type: str) -> AbstractUser:
-        return UserFactory.create(self, user_name, user_type)
+        return UserFactory.create(user_name, user_type)
 
     def create_course(self, category, type, name) -> Union[str, AbstractCourse]:
-        return CourseFactory.create(self, category, type,name)
+        return CourseFactory.create(category, type, name)
 
     def create_category(self, category_name) -> Union[str, AbstractCategory]:
-        return CategoryFactory.create(self, category_name)
+        return CategoryFactory.create(category_name)
 
     def get_course(self, course_id: int) -> AbstractCourse:
         for item in self.courses:
