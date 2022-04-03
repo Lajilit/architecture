@@ -13,7 +13,9 @@
     {% include "core/includes/menu.html" %}
 </header>
 {% include "core/includes/is_authorized.html" %}
+{% if context.error %}
 {% include "core/includes/error.html" %}
+{% endif %}
 {% if context.success %}
 {% include "core/includes/success.html" %}
 {% else %}
