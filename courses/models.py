@@ -26,9 +26,11 @@ class AbstractCourse(CoursePrototypeMixin, Component):
 
     def check(self, site):
         for item in site.courses:
-            if item.name == self.name \
-                    and item.type == self.type \
-                    and item.category == self.category:
+            if (
+                item.name == self.name
+                and item.type == self.type
+                and item.category == self.category
+            ):
                 raise AlreadyExistsError("Course already exists")
 
     def save(self, site):
@@ -58,7 +60,5 @@ class CourseFactory:
     def create(cls, category, type, name):
         if not cls.course_types.get(type):
             raise CourseTypeError("Wrong course type")
-        new_course = cls.course_types[type](
-            category, name, type
-        )
+        new_course = cls.course_types[type](category, name, type)
         return new_course

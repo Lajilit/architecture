@@ -16,7 +16,7 @@ class CourseListView(View):
             "title": "Courses",
             "header": "Courses",
             "courses": site.courses,
-            "categories": site.base_category.tree()
+            "categories": site.base_category.tree(),
         }
         return Response(render_template("courses/course_list.html", context=context))
 
@@ -29,8 +29,8 @@ class CourseCreateView(View):
             "is_authorized": request.is_authorized,
             "title": "Create course",
             "header": "Create course",
-            'course_types': COURSE_TYPES,
-            "categories": categories
+            "course_types": COURSE_TYPES,
+            "categories": categories,
         }
         if request.path == "/courses/clone":
             template = "courses/course_clone.html"
@@ -50,8 +50,8 @@ class CourseCreateView(View):
             "is_authorized": request.is_authorized,
             "title": "Create course",
             "header": "Create course",
-            'course_types': COURSE_TYPES,
-            "categories": categories
+            "course_types": COURSE_TYPES,
+            "categories": categories,
         }
         new_course = None
         category_id = int(request.data.get("course_category")[0])

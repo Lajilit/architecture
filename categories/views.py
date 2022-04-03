@@ -12,10 +12,11 @@ class CategoryListView(View):
             "is_authorized": request.is_authorized,
             "title": "Course categories",
             "header": "Course categories",
-            "categories": site.base_category.tree()
+            "categories": site.base_category.tree(),
         }
         return Response(
-            render_template("categories/categories_list.html", context=context))
+            render_template("categories/categories_list.html", context=context)
+        )
 
 
 class CategoryCreateView(View):
@@ -25,7 +26,7 @@ class CategoryCreateView(View):
             "is_authorized": request.is_authorized,
             "title": "Create category",
             "header": "Create category",
-            "categories": site.base_category.tree()
+            "categories": site.base_category.tree(),
         }
         return Response(render_template(template, context=context))
 

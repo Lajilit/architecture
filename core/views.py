@@ -31,7 +31,7 @@ class ContactsView(View):
             "text": "Our contacts",
             "email": "example123@gmail.com",
             "phone": "+7 800 123-45-67",
-            "success": "We received your message"
+            "success": "We received your message",
         }
 
         return Response(render_template("core/contacts.html", context=context))
