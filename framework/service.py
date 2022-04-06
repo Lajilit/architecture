@@ -30,7 +30,7 @@ def get_view(request_path: str, url_patterns: list):
         if url.url == request_path:
             return url.action
         if url.url != "/" and request_path.startswith(url.url):
-            url_split = request_path.lstrip(url.url)
+            _, url_split = request_path.split(url.url)
             try:
                 view = url.action(url_split)
             except TypeError:

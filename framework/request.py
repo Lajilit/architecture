@@ -5,8 +5,8 @@ class Request:
     def __init__(self, environ: dict):
         self.method = environ.get("REQUEST_METHOD")
         self.path = environ.get("PATH_INFO")
-        if self.path != "/":
-            self.path = self.path.rstrip("/")
+        if not self.path.endswith("/"):
+            self.path = self.path + "/"
         self.headers = self._get_headers(environ)
         self.data = self._get_request_data(environ)
         self.params = parse_qs(environ.get("QUERY_STRING"))

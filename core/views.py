@@ -11,7 +11,8 @@ class MainView(View):
             "is_authorized": request.is_authorized,
             "title": "Courses list",
             "header": "Courses list",
-            "courses_list": site.courses,
+            "courses": site.courses,
+            "categories": site.base_category.tree()
         }
         return Response(render_template("/core/index.html", context=context))
 

@@ -61,7 +61,7 @@ class CourseCreateView(View):
             "type": request.data.get("course_type")[0],
             "name": request.data.get("course_name")[0],
         }
-        if request.path == "/courses/clone":
+        if request.path == "/courses/clone/":
             template = "courses/course_clone.html"
             context["title"] = context["header"] = "Clone course"
             course_to_clone = site.get_course(
@@ -72,7 +72,7 @@ class CourseCreateView(View):
 
             new_course = course_to_clone.clone(**new_course_data)
 
-        elif request.path == "/courses/create":
+        elif request.path == "/courses/create/":
             try:
                 new_course = site.create_course(**new_course_data)
             except CourseTypeError as e:

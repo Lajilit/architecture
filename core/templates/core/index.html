@@ -4,9 +4,25 @@
 
 {% block content %}
 <h1>
-    {{ context.text }}
+    {{ context.header }}
 </h1>
-<p>{{ context.description }}</p>
+<div>
+    {% if context.courses %}
+    <ul>
+        {% for category in context.categories %}
+        <li>{{category.name }}:
+            <ul>
+                {% for course in category.self.get_courses %}
+                <li>{{course.name }} ({{course.type}})</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Courses not found</p>
+    {% endif %}
+</div>
 {% endblock %}
 
 

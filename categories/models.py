@@ -52,6 +52,14 @@ class AbstractCategory(Component):
                         categories.append(el)
         return categories
 
+    @property
+    def get_courses(self):
+        courses = []
+        for child in self._children:
+            if not isinstance(child, Category):
+                courses.append(child)
+        return courses
+
 
 class Category(AbstractCategory):
     pass
