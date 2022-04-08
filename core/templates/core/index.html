@@ -12,7 +12,7 @@
         {% for category in context.categories %}
         <li>{{category.name }}:
             <ul>
-                {% for course in category.self.get_courses %}
+                {% for course in category.object.courses %}
                 <li>{{course.name }} ({{course.type}})</li>
                 {% endfor %}
             </ul>

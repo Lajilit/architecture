@@ -21,7 +21,7 @@ class Teacher(AbstractUser):
 
     def save(self, site):
         super().save(site)
-        site.teachers.append(self)
+        site.teachers.add_child(self)
 
 
 class Student(AbstractUser):
@@ -30,7 +30,7 @@ class Student(AbstractUser):
 
     def save(self, site):
         super().save(site)
-        site.students.append(self)
+        site.students.add_child(self)
 
 
 class UserFactory:

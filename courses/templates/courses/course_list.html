@@ -10,7 +10,7 @@
     {% if context.courses %}
     <ul>
         {% for course in context.courses %}
-        <li>{{course.id }}: {{course.category.name }} : {{course.name }} ({{
+        <li>{{course.category.name }} : {{course.name }} ({{
             course.type}})
             <button>
                 <a href="/courses/clone/?course_id={{course.id}}">Clone course</a>

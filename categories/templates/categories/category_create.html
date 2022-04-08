@@ -12,7 +12,7 @@
         <select id="parent_category" name="parent_category" required>
             <option  value="0">-----</option>
             {% for category in context.categories %}
-            <option value={{category.self.id}}>{{category.name}}</option>
+            <option value={{category.object.id}}>{{category.name}}</option>
             {% endfor %}
         </select>
     </div>

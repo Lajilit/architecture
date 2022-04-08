@@ -12,7 +12,7 @@ class MainView(View):
             "title": "Courses list",
             "header": "Courses list",
             "courses": site.courses,
-            "categories": site.base_category.tree()
+            "categories": site.base_category.tree(),
         }
         return Response(render_template("/core/index.html", context=context))
 

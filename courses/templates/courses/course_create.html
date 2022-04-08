@@ -12,7 +12,7 @@
         <label for="course_category">Course category</label>
         <select id="course_category" name="course_category" required>
             {% for category in context.categories %}
-            <option value={{category.self.id}}>{{category.name}}</option>
+            <option value={{category.object.id}}>{{category.name}}</option>
             {% endfor %}
         </select>
     </div>

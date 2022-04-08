@@ -1,7 +1,4 @@
 import abc
-from typing import Union
-
-from core.errors import AlreadyExistsError
 
 
 class Component(metaclass=abc.ABCMeta):
@@ -10,63 +7,49 @@ class Component(metaclass=abc.ABCMeta):
         pass
 
 
-class AbstractCategory(Component):
+class Category(Component):
     count = 0
 
-    def __init__(self, name: str, id=None):
+    def __init__(self, name: str, parent: "Category" = None, id=None):
         self.id = id
         self.name = name
-        self._children = set()
-
-    def check(self, category):
-        for item in self._children:
-            if item.name == category.name:
-                raise AlreadyExistsError("Category already exists")
+        self.parent = parent
+        self.children = set()
+        self.courses = set()
 
     def save(self):
         Category.count += 1
+        self.parent.add_child(self)
         self.id = self.count
 
-    def append(self, component):
-        self._children.add(component)
+    def add_child(self, component):
+        self.children.add(component)
 
-    def remove(self, component):
-        self._children.discard(component)
+    def remove_child(self, component):
+        self.children.discard(component)
+
+    def add_course(self, course):
+        self.courses.add(course)
+
+    def remove_course(self, course):
+        self.courses.remove(course)
 
     def calculate(self):
-        components_count = 0
-        for child in self._children:
-            components_count += child.calculate()
-        return components_count
+        courses_count = len(self.courses)
+        for child in self.children:
+            courses_count += child.calculate()
+        return courses_count
 
     def tree(self):
-        categories = [] if self.name == "base" else [{"name": self.name, "self": self}]
-        for child in self._children:
-            if isinstance(child, Category):
-                if self.name == "base":
-                    for el in child.tree():
-                        categories.append(el)
-                else:
-                    for el in child.tree():
-                        el["name"] = f"-{el['name']}"
-                        categories.append(el)
-        return categories
-
-    @property
-    def get_courses(self):
-        courses = []
-        for child in self._children:
-            if not isinstance(child, Category):
-                courses.append(child)
-        return courses
-
-
-class Category(AbstractCategory):
-    pass
-
-
-class CategoryFactory:
-    @classmethod
-    def create(cls, category_name: str) -> Union[str, AbstractCategory]:
-        new_category = Category(category_name)
-        return new_category
+        categories_tree = (
+            [] if self.name == "base" else [{"name": self.name, "object": self}]
+        )
+        for child in self.children:
+            if self.name == "base":
+                for el in child.tree():
+                    categories_tree.append(el)
+            else:
+                for el in child.tree():
+                    el["name"] = f"-{el['name']}"
+                    categories_tree.append(el)
+        return categories_tree

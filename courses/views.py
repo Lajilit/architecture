@@ -32,15 +32,6 @@ class CourseCreateView(View):
             "course_types": COURSE_TYPES,
             "categories": categories,
         }
-        if request.path == "/courses/clone":
-            template = "courses/course_clone.html"
-            params = request.params
-            course_to_clone = site.get_course(
-                course_id=int(params.get("course_id")[0]),
-            )
-            context["title"] = "Clone users"
-            context["header"] = "Clone users"
-            context["old_course"] = course_to_clone
         return Response(render_template(template, context=context))
 
     def post(self, request):
@@ -58,34 +49,65 @@ class CourseCreateView(View):
         category = site.get_category(category_id)
         new_course_data = {
             "category": category,
-            "type": request.data.get("course_type")[0],
+            "course_type": request.data.get("course_type")[0],
             "name": request.data.get("course_name")[0],
         }
-        if request.path == "/courses/clone/":
-            template = "courses/course_clone.html"
-            context["title"] = context["header"] = "Clone course"
-            course_to_clone = site.get_course(
-                course_id=int(request.data.get("old_course_id")[0]),
-            )
+        try:
+            new_course = site.create_course(**new_course_data)
+        except (CourseTypeError, AlreadyExistsError) as e:
+            context["error"] = e.text
+        else:
+            new_course.save(site)
+            context["success"] = "Course created"
 
-            context["old_course"] = course_to_clone
+        return Response(render_template(template, context=context))
 
+
+class CourseCloneView(View):
+    def get(self, request):
+        categories = site.base_category.tree()
+        template = "courses/course_clone.html"
+        params = request.params
+        course_to_clone = site.get_course_by_id(
+            course_id=int(params.get("course_id")[0]),
+        )
+        context = {
+            "is_authorized": request.is_authorized,
+            "title": "Clone course",
+            "header": "Clone course",
+            "course_types": COURSE_TYPES,
+            "categories": categories,
+            "old_course": course_to_clone,
+        }
+        return Response(render_template(template, context=context))
+
+    def post(self, request):
+        categories = site.base_category.tree()
+        template = "courses/course_clone.html"
+        course_to_clone = site.get_course_by_id(
+            course_id=int(request.data.get("old_course_id")[0]),
+        )
+        category_id = int(request.data.get("course_category")[0])
+        category = site.get_category(category_id)
+        new_course_data = {
+            "category": category,
+            "course_type": request.data.get("course_type")[0],
+            "name": request.data.get("course_name")[0],
+        }
+        context = {
+            "is_authorized": request.is_authorized,
+            "title": "Clone course",
+            "header": "Clone course",
+            "course_types": COURSE_TYPES,
+            "categories": categories,
+            "old_course": course_to_clone,
+        }
+
+        if site.get_course(**new_course_data):
+            context["error"] = "Course already exists"
+        else:
             new_course = course_to_clone.clone(**new_course_data)
-
-        elif request.path == "/courses/create/":
-            try:
-                new_course = site.create_course(**new_course_data)
-            except CourseTypeError as e:
-                context["error"] = e.text
-
-        if new_course:
-            try:
-                new_course.check(site)
-            except AlreadyExistsError as e:
-                context["error"] = e.text
-            else:
-                new_course.save(site)
-                category.append(new_course)
-                context["success"] = "Course created"
+            new_course.save(site)
+            context["success"] = "Course created"
 
         return Response(render_template(template, context=context))

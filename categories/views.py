@@ -37,23 +37,20 @@ class CategoryCreateView(View):
             "title": "Create category",
             "header": "Create category",
         }
-        new_category = site.create_category(
-            category_name=request.data.get("category_name")[0]
-        )
-
         parent_category_id = int(request.data.get("parent_category")[0])
-
         parent_category = site.get_category(parent_category_id)
         if not parent_category:
             parent_category = site.base_category
+
         try:
-            parent_category.check(new_category)
+            new_category = site.create_category(
+                category_name=request.data.get("category_name")[0],
+                parent=parent_category,
+            )
         except AlreadyExistsError as e:
             context["error"] = e.text
         else:
             new_category.save()
-            parent_category.append(new_category)
-
             context["success"] = "Category created"
 
         return Response(render_template(template, context=context))

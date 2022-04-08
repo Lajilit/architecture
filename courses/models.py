@@ -1,45 +1,35 @@
 import copy
-from categories.models import AbstractCategory, Component
+
+from categories.models import Category
 from core.errors import AlreadyExistsError, CourseTypeError
 
 
 class CoursePrototypeMixin:
-    def clone(self, category=None, type=None, name=None):
+    def clone(self, category=None, course_type=None, name=None):
         clone = copy.deepcopy(self)
         if name:
             clone.name = name
-        if type:
-            clone.type = type
+        if course_type:
+            clone.type = course_type
         if category:
             clone.category = category
         return clone
 
 
-class AbstractCourse(CoursePrototypeMixin, Component):
+class AbstractCourse(CoursePrototypeMixin):
     count = 0
 
-    def __init__(self, category: AbstractCategory, name: str, type: str):
+    def __init__(self, category: Category, name: str, type: str):
         self.id = None
         self.category = category
         self.name = name
         self.type = type
 
-    def check(self, site):
-        for item in site.courses:
-            if (
-                item.name == self.name
-                and item.type == self.type
-                and item.category == self.category
-            ):
-                raise AlreadyExistsError("Course already exists")
-
     def save(self, site):
         site.courses.append(self)
         AbstractCourse.count += 1
         self.id = self.count
-
-    def calculate(self):
-        return 1
+        self.category.add_course(self)
 
 
 class InteractiveCourse(AbstractCourse):
