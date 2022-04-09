@@ -7,9 +7,9 @@
     {{ context.header }}
 </h1>
 <div>
-    {% if context.categories %}
+    {% if context.objects %}
     <ul>
-        {% for category in context.categories %}
+        {% for category in context.objects %}
         <li>{{ category.name }}: {{category.object.calculate()}}</li>
         {% endfor %}
     </ul>

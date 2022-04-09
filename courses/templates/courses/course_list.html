@@ -7,9 +7,9 @@
     {{ context.header }}
 </h1>
 <div>
-    {% if context.courses %}
+    {% if context.objects %}
     <ul>
-        {% for course in context.courses %}
+        {% for course in context.objects %}
         <li>{{course.category.name }} : {{course.name }} ({{
             course.type}})
             <button>

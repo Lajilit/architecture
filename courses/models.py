@@ -1,7 +1,7 @@
 import copy
 
 from categories.models import Category
-from core.errors import AlreadyExistsError, CourseTypeError
+from framework.errors import CourseTypeError
 
 
 class CoursePrototypeMixin:

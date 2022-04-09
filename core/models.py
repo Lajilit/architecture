@@ -1,7 +1,7 @@
 from typing import Union
 
 from categories.models import Category
-from core.errors import AlreadyExistsError
+from framework.errors import AlreadyExistsError
 from courses.models import CourseFactory, AbstractCourse
 
 from users.models import UserFactory, AbstractUser
@@ -36,16 +36,19 @@ class CustomSite:
             ):
                 return item
 
-    def create_category(self, category_name, parent) -> Union[str, Category]:
+    def create_category(self, category_name, parent=None) -> Union[str, Category]:
+        if not parent:
+            parent = self.base_category
         for item in parent.children:
             if item.name == category_name:
                 raise AlreadyExistsError("Category already exists")
         return Category(category_name, parent)
 
-    def get_category(self, category_id: int) -> Category:
-        for item in self.base_category.tree():
-            if item["object"].id == category_id:
-                return item["object"]
+    def get_category(self, category_id: int = None) -> Category:
+        if category_id:
+            for item in self.base_category.tree():
+                if item["object"].id == category_id:
+                    return item["object"]
 
     def get_user(self, user_id: int) -> Category:
         for item in self.teachers:

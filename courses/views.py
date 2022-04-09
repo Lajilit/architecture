@@ -1,5 +1,5 @@
-from core.errors import AlreadyExistsError, CourseTypeError
 from courses.models import CourseFactory
+from framework.errors import AlreadyExistsError, CourseTypeError
 from framework.response import Response
 from framework.service import render_template
 from framework.views import View
@@ -9,48 +9,51 @@ COURSE_TYPES = CourseFactory.course_types
 
 
 class CourseListView(View):
+    template = "courses/course_list.html"
+
     @staticmethod
-    def get(request):
+    def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
             "title": "Courses",
             "header": "Courses",
-            "courses": site.courses,
-            "categories": site.base_category.tree(),
+            "objects": site.courses,
         }
-        return Response(render_template("courses/course_list.html", context=context))
+        return context
+
+    def get(self, request):
+        context = self.get_context(request)
+        context["categories"] = site.base_category.tree()
+        return Response(render_template(self.template, context=context))
 
 
 class CourseCreateView(View):
-    def get(self, request):
-        categories = site.base_category.tree()
-        template = "courses/course_create.html"
+    template = "courses/course_create.html"
+
+    @staticmethod
+    def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
             "title": "Create course",
             "header": "Create course",
             "course_types": COURSE_TYPES,
-            "categories": categories,
+            "categories": site.base_category.tree(),
         }
-        return Response(render_template(template, context=context))
+        return context
+
+    def get(self, request):
+        context = self.get_context(request)
+        return Response(render_template(self.template, context=context))
 
     def post(self, request):
-        template = "courses/course_create.html"
-        categories = site.base_category.tree()
-        context = {
-            "is_authorized": request.is_authorized,
-            "title": "Create course",
-            "header": "Create course",
-            "course_types": COURSE_TYPES,
-            "categories": categories,
-        }
-        new_course = None
-        category_id = int(request.data.get("course_category")[0])
+        context = self.get_context(request)
+
+        category_id = int(request.data.get("course_category"))
         category = site.get_category(category_id)
         new_course_data = {
             "category": category,
-            "course_type": request.data.get("course_type")[0],
-            "name": request.data.get("course_name")[0],
+            "course_type": request.data.get("course_type"),
+            "name": request.data.get("course_name"),
         }
         try:
             new_course = site.create_course(**new_course_data)
@@ -60,54 +63,49 @@ class CourseCreateView(View):
             new_course.save(site)
             context["success"] = "Course created"
 
-        return Response(render_template(template, context=context))
+        return Response(render_template(self.template, context=context))
 
 
 class CourseCloneView(View):
-    def get(self, request):
-        categories = site.base_category.tree()
-        template = "courses/course_clone.html"
-        params = request.params
-        course_to_clone = site.get_course_by_id(
-            course_id=int(params.get("course_id")[0]),
-        )
+    template = "courses/course_clone.html"
+
+    @staticmethod
+    def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
             "title": "Clone course",
             "header": "Clone course",
             "course_types": COURSE_TYPES,
-            "categories": categories,
-            "old_course": course_to_clone,
+            "categories": site.base_category.tree(),
         }
-        return Response(render_template(template, context=context))
+        return context
+
+    def get(self, request):
+        context = self.get_context(request)
+        old_course = site.get_course_by_id(
+            course_id=int(request.params.get("course_id")),
+        )
+        context["old_course"] = old_course
+        return Response(render_template(self.template, context=context))
 
     def post(self, request):
-        categories = site.base_category.tree()
-        template = "courses/course_clone.html"
-        course_to_clone = site.get_course_by_id(
-            course_id=int(request.data.get("old_course_id")[0]),
+        context = self.get_context(request)
+        old_course = site.get_course_by_id(
+            course_id=int(request.data.get("old_course_id")),
         )
-        category_id = int(request.data.get("course_category")[0])
+        context["old_course"] = old_course
+        category_id = int(request.data.get("course_category"))
         category = site.get_category(category_id)
         new_course_data = {
             "category": category,
-            "course_type": request.data.get("course_type")[0],
-            "name": request.data.get("course_name")[0],
+            "course_type": request.data.get("course_type"),
+            "name": request.data.get("course_name"),
         }
-        context = {
-            "is_authorized": request.is_authorized,
-            "title": "Clone course",
-            "header": "Clone course",
-            "course_types": COURSE_TYPES,
-            "categories": categories,
-            "old_course": course_to_clone,
-        }
-
         if site.get_course(**new_course_data):
             context["error"] = "Course already exists"
         else:
-            new_course = course_to_clone.clone(**new_course_data)
+            new_course = old_course.clone(**new_course_data)
             new_course.save(site)
             context["success"] = "Course created"
 
-        return Response(render_template(template, context=context))
+        return Response(render_template(self.template, context=context))

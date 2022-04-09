@@ -1,6 +1,6 @@
 from typing import Union
 
-from core.errors import AlreadyExistsError
+from framework.errors import AlreadyExistsError
 
 
 class AbstractUser:
