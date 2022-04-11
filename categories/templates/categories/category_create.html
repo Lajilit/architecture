@@ -8,6 +8,15 @@
 </h1>
 <form method="post">
     <div>
+        <label for="parent_category">Parent category</label>
+        <select id="parent_category" name="parent_category" required>
+            <option  value="0">-----</option>
+            {% for category in context.categories %}
+            <option value={{category.self.id}}>{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
         <label for="category_name">Category name</label>
         <input type="text" id="category_name" name="category_name"
                placeholder="Category name" required>

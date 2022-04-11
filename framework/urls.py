@@ -5,9 +5,8 @@ from framework.service import get_view
 from framework.views import View
 
 
-
 class Include:
-    def __init__(self, urlpatterns: list['URL']):
+    def __init__(self, urlpatterns: list["URL"]):
         self.urlpatterns = urlpatterns
 
     def __call__(self, path: str):

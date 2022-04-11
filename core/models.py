@@ -1,6 +1,6 @@
 from typing import Union
 
-from categories.models import AbstractCategory, CategoryFactory
+from categories.models import AbstractCategory, CategoryFactory, Category
 from courses.models import CourseFactory, AbstractCourse
 
 from users.models import UserFactory, AbstractUser
@@ -11,7 +11,7 @@ class CustomSite:
         self.teachers = []
         self.students = []
         self.courses = []
-        self.categories = []
+        self.base_category = Category("base", id=0)
 
     def create_user(self, user_name, user_type: str) -> AbstractUser:
         return UserFactory.create(user_name, user_type)
@@ -28,9 +28,9 @@ class CustomSite:
                 return item
 
     def get_category(self, category_id: int) -> AbstractCategory:
-        for item in self.categories:
-            if item.id == category_id:
-                return item
+        for item in self.base_category.tree():
+            if item["self"].id == category_id:
+                return item["self"]
 
     def get_user(self, user_id: int) -> AbstractCategory:
         for item in self.teachers:

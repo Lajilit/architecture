@@ -12,10 +12,11 @@ class CategoryListView(View):
             "is_authorized": request.is_authorized,
             "title": "Course categories",
             "header": "Course categories",
-            "categories": site.categories
+            "categories": site.base_category.tree(),
         }
         return Response(
-            render_template("categories/categories_list.html", context=context))
+            render_template("categories/categories_list.html", context=context)
+        )
 
 
 class CategoryCreateView(View):
@@ -25,6 +26,7 @@ class CategoryCreateView(View):
             "is_authorized": request.is_authorized,
             "title": "Create category",
             "header": "Create category",
+            "categories": site.base_category.tree(),
         }
         return Response(render_template(template, context=context))
 
@@ -38,12 +40,20 @@ class CategoryCreateView(View):
         new_category = site.create_category(
             category_name=request.data.get("category_name")[0]
         )
+
+        parent_category_id = int(request.data.get("parent_category")[0])
+
+        parent_category = site.get_category(parent_category_id)
+        if not parent_category:
+            parent_category = site.base_category
         try:
-            new_category.check(site)
+            parent_category.check(new_category)
         except AlreadyExistsError as e:
             context["error"] = e.text
         else:
-            new_category.save(site)
+            new_category.save()
+            parent_category.append(new_category)
+
             context["success"] = "Category created"
 
         return Response(render_template(template, context=context))

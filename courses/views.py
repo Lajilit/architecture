@@ -15,21 +15,22 @@ class CourseListView(View):
             "is_authorized": request.is_authorized,
             "title": "Courses",
             "header": "Courses",
-            "courses": site.courses
+            "courses": site.courses,
+            "categories": site.base_category.tree(),
         }
         return Response(render_template("courses/course_list.html", context=context))
 
 
 class CourseCreateView(View):
     def get(self, request):
-        categories = site.categories
+        categories = site.base_category.tree()
         template = "courses/course_create.html"
         context = {
             "is_authorized": request.is_authorized,
             "title": "Create course",
             "header": "Create course",
-            'course_types': COURSE_TYPES,
-            "categories": categories
+            "course_types": COURSE_TYPES,
+            "categories": categories,
         }
         if request.path == "/courses/clone":
             template = "courses/course_clone.html"
@@ -37,7 +38,6 @@ class CourseCreateView(View):
             course_to_clone = site.get_course(
                 course_id=int(params.get("course_id")[0]),
             )
-            print(course_to_clone.name)
             context["title"] = "Clone users"
             context["header"] = "Clone users"
             context["old_course"] = course_to_clone
@@ -45,13 +45,13 @@ class CourseCreateView(View):
 
     def post(self, request):
         template = "courses/course_create.html"
-        categories = site.categories
+        categories = site.base_category.tree()
         context = {
             "is_authorized": request.is_authorized,
             "title": "Create course",
             "header": "Create course",
-            'course_types': COURSE_TYPES,
-            "categories": categories
+            "course_types": COURSE_TYPES,
+            "categories": categories,
         }
         new_course = None
         category_id = int(request.data.get("course_category")[0])
@@ -61,7 +61,6 @@ class CourseCreateView(View):
             "type": request.data.get("course_type")[0],
             "name": request.data.get("course_name")[0],
         }
-        print(new_course_data)
         if request.path == "/courses/clone":
             template = "courses/course_clone.html"
             context["title"] = context["header"] = "Clone course"
@@ -86,6 +85,7 @@ class CourseCreateView(View):
                 context["error"] = e.text
             else:
                 new_course.save(site)
+                category.append(new_course)
                 context["success"] = "Course created"
 
         return Response(render_template(template, context=context))
