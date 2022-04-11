@@ -6,13 +6,18 @@
 <h1>
     {{ context.text }}
 </h1>
+
+{% if context.success %}
+<p>{{ context.success}}</p>
+{% endif %}
+
 <p>e-mail: {{ context.email }}</p>
 <p>phone: {{ context.phone }}</p>
-<h3> Отправить сообщение</h3>
+<h3> Send message</h3>
 <form method="post">
-    <div><input type="text" name="email" placeholder="Ваш email" required></div>
-    <div><input type="text" name="title" placeholder="Тема сообщения" required></div>
-    <div><textarea name="text" placeholder="Текст сообщения" required></textarea></div>
-    <button type="submit">Отправить</button>
+    <div><input type="text" name="email" placeholder="Your email" required></div>
+    <div><input type="text" name="title" placeholder="Message title" required></div>
+    <div><textarea name="text" placeholder="Message text" required></textarea></div>
+    <button type="submit">Send message</button>
 </form>
 {% endblock %}

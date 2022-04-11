@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<div>
+    {% if context.categories %}
+    <ul>
+        {% for category in context.categories %}
+        <li>{{category.id }}: {{category.name }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Categories non found</p>
+    {% endif %}
+    <button><a href="/categories/create">Create category</a></button>
+
+</div>
+{% endblock %}

@@ -1,4 +1,3 @@
-
 from framework import Application
 
 from core.urls import urlpatterns
