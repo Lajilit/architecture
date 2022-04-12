@@ -11,7 +11,7 @@
     <ul>
         {% for course in context.objects %}
         <li>{{course.category.name }} : {{course.name }} ({{
-            course.type}})
+            course.course_type}})
             <button>
                 <a href="/courses/clone/?course_id={{course.id}}">Clone course</a>
             </button>

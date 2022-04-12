@@ -12,6 +12,7 @@ class CategoryListView(View):
     def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Course categories",
             "header": "Course categories",
             "objects": site.base_category.tree(),
@@ -30,6 +31,7 @@ class CategoryCreateView(View):
     def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Create category",
             "header": "Create category",
         }
@@ -53,7 +55,7 @@ class CategoryCreateView(View):
         except AlreadyExistsError as e:
             context["error"] = e.text
         else:
-            new_category.save()
+            new_category.save(site)
             context["success"] = "Category created"
 
         return Response(render_template(self.template, context=context))

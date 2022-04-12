@@ -1,7 +1,5 @@
 import os.path
-from core.models import CustomSite
-
-BASE_DIR = os.path.dirname(__file__)
+from core.models import CustomSite, BASE_DIR
 
 INSTALLED_APPS = [
     "core",

@@ -1,11 +1,11 @@
 from courses.models import CourseFactory
-from framework.errors import AlreadyExistsError, CourseTypeError
+from framework.errors import AlreadyExistsError, ModelTypeError
 from framework.response import Response
 from framework.service import render_template
 from framework.views import View
 from settings import SITE as site
 
-COURSE_TYPES = CourseFactory.course_types
+COURSE_TYPES = CourseFactory.course_models
 
 
 class CourseListView(View):
@@ -15,6 +15,7 @@ class CourseListView(View):
     def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Courses",
             "header": "Courses",
             "objects": site.courses,
@@ -34,6 +35,7 @@ class CourseCreateView(View):
     def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Create course",
             "header": "Create course",
             "course_types": COURSE_TYPES,
@@ -57,11 +59,11 @@ class CourseCreateView(View):
         }
         try:
             new_course = site.create_course(**new_course_data)
-        except (CourseTypeError, AlreadyExistsError) as e:
+        except (ModelTypeError, AlreadyExistsError) as e:
             context["error"] = e.text
         else:
             new_course.save(site)
-            context["success"] = "Course created"
+            context["success"] = f"{new_course.course_type.title()} course created"
 
         return Response(render_template(self.template, context=context))
 
@@ -73,6 +75,7 @@ class CourseCloneView(View):
     def get_context(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Clone course",
             "header": "Clone course",
             "course_types": COURSE_TYPES,
@@ -82,7 +85,7 @@ class CourseCloneView(View):
 
     def get(self, request):
         context = self.get_context(request)
-        old_course = site.get_course_by_id(
+        old_course = site.get_course(
             course_id=int(request.params.get("course_id")),
         )
         context["old_course"] = old_course
@@ -90,22 +93,22 @@ class CourseCloneView(View):
 
     def post(self, request):
         context = self.get_context(request)
-        old_course = site.get_course_by_id(
+        old_course = site.get_course(
             course_id=int(request.data.get("old_course_id")),
         )
+        course_model = type(old_course)
         context["old_course"] = old_course
         category_id = int(request.data.get("course_category"))
         category = site.get_category(category_id)
         new_course_data = {
             "category": category,
-            "course_type": request.data.get("course_type"),
             "name": request.data.get("course_name"),
         }
-        if site.get_course(**new_course_data):
+        if CourseFactory.check_course_exists(site, course_model, **new_course_data):
             context["error"] = "Course already exists"
         else:
             new_course = old_course.clone(**new_course_data)
             new_course.save(site)
-            context["success"] = "Course created"
+            context["success"] = f"{new_course.course_type.title()} course cloned"
 
         return Response(render_template(self.template, context=context))

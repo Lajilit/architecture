@@ -18,18 +18,6 @@
     </select>
 </div>
 <div>
-    <label for="course_type">Course type</label>
-    <select id="course_type" name="course_type" required>
-        {% for course_type in context.course_types %}
-        {% if context.old_course.type == course_type %}
-        <option value={{course_type}} selected>{{course_type}}</option>
-        {% else %}}
-        <option value={{course_type}}>{{course_type}}</option>
-        {% endif %}}
-        {% endfor %}
-    </select>
-</div>
-<div>
     <label for="course_name">Course name</label>
     <input type="text" id="course_name" name="course_name"
            value={{context.old_course.name}}>

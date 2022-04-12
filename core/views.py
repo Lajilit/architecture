@@ -9,6 +9,7 @@ class MainView(View):
     def get(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Courses list",
             "header": "Courses list",
             "courses": site.courses,
@@ -28,6 +29,7 @@ class ContactsView(View):
 
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Contacts",
             "text": "Our contacts",
             "email": "example123@gmail.com",
@@ -41,6 +43,7 @@ class ContactsView(View):
     def get(request):
         context = {
             "is_authorized": request.is_authorized,
+            "user": request.user,
             "title": "Contacts",
             "text": "Our contacts",
             "email": "example123@gmail.com",

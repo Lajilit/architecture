@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<form method="post">
+    <div>
+        <label for="user_type">Username</label>
+        <select id="user_type" name="user_type" required>
+            {% for user_type in context.user_types %}
+            <option value={{user_type}}>{{user_type}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username"
+               placeholder="Username" required>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"
+               placeholder="********" required>
+    </div>
+    <div>
+        <label for="password_2">Confirm password</label>
+        <input type="password" id="password_2" name="password_2"
+               placeholder="********" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+{% endblock %}

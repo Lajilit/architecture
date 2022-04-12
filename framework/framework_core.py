@@ -13,7 +13,6 @@ class Application:
         :param environ: словарь данных от сервера
         :param start_response: функция для ответа серверу
         """
-
         request = Request(environ)
         if self.front_controllers:
             for controller in self.front_controllers:

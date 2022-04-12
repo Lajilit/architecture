@@ -1,7 +1,9 @@
 <div>
     {% if context.is_authorized %}
-    <p>Your token is ok</p>
+    <p>{{ context.user.name }}</p>
+    <a href="/users/logout">Log out</a>
     {% else %}
-    <p>Your token is empty</p>
+    <a href="/users/register">Register</a>
+    <a href="/users/login">Log in</a>
     {% endif %}
 </div>

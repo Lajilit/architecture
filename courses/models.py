@@ -1,16 +1,14 @@
 import copy
 
 from categories.models import Category
-from framework.errors import CourseTypeError
+from framework.errors import ModelTypeError, AlreadyExistsError
 
 
 class CoursePrototypeMixin:
-    def clone(self, category=None, course_type=None, name=None):
+    def clone(self, category=None, name=None):
         clone = copy.deepcopy(self)
         if name:
             clone.name = name
-        if course_type:
-            clone.type = course_type
         if category:
             clone.category = category
         return clone
@@ -18,12 +16,12 @@ class CoursePrototypeMixin:
 
 class AbstractCourse(CoursePrototypeMixin):
     count = 0
+    course_type = None
 
-    def __init__(self, category: Category, name: str, type: str):
+    def __init__(self, category: Category, name: str):
         self.id = None
         self.category = category
         self.name = name
-        self.type = type
 
     def save(self, site):
         site.courses.append(self)
@@ -33,22 +31,40 @@ class AbstractCourse(CoursePrototypeMixin):
 
 
 class InteractiveCourse(AbstractCourse):
+    course_type = "online"
     pass
 
 
 class VebinarCourse(AbstractCourse):
+    course_type = "offline"
     pass
 
 
 class CourseFactory:
-    course_types = {
+    course_models = {
         "online": InteractiveCourse,
         "offline": VebinarCourse,
     }
 
     @classmethod
-    def create(cls, category, type, name):
-        if not cls.course_types.get(type):
-            raise CourseTypeError("Wrong course type")
-        new_course = cls.course_types[type](category, name, type)
+    def create(cls, site, category, course_type, name):
+        course_model = cls.course_models.get(course_type)
+
+        if not course_model:
+            raise ModelTypeError("Wrong course type")
+
+        if cls.check_course_exists(site, course_model, category, name):
+            raise AlreadyExistsError("Course already exists")
+
+        new_course = course_model(category, name)
         return new_course
+
+    @staticmethod
+    def check_course_exists(site, course_model, category, name):
+        for item in site.courses:
+            if (
+                item.name == name
+                and item.category == category
+                and isinstance(item, course_model)
+            ):
+                return True

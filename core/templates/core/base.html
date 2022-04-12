@@ -10,9 +10,9 @@
 
 <body>
 <header>
+    {% include "core/includes/is_authorized.html" %}
     {% include "core/includes/menu.html" %}
 </header>
-{% include "core/includes/is_authorized.html" %}
 {% if context.error %}
 {% include "core/includes/error.html" %}
 {% endif %}

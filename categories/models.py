@@ -17,10 +17,11 @@ class Category(Component):
         self.children = set()
         self.courses = set()
 
-    def save(self):
+    def save(self, site):
+        site.categories.append(self)
         Category.count += 1
-        self.parent.add_child(self)
         self.id = self.count
+        self.parent.add_child(self)
 
     def add_child(self, component):
         self.children.add(component)

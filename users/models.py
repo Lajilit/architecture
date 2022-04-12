@@ -1,45 +1,49 @@
-from typing import Union
-
-from framework.errors import AlreadyExistsError
+from framework.errors import AlreadyExistsError, ModelTypeError
 
 
 class AbstractUser:
     count = 0
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, password: str):
         self.id = None
         self.name = name
+        self.password = password
+        self.token = f"{self.name}{self.password}"
 
     def save(self, site):
         AbstractUser.count += 1
         self.id = self.count
+        site.users.append(self)
 
 
 class Teacher(AbstractUser):
-    def __init__(self, name):
-        super().__init__(name)
-
-    def save(self, site):
-        super().save(site)
-        site.teachers.add_child(self)
+    user_type = "teacher"
 
 
 class Student(AbstractUser):
-    def __init__(self, name):
-        super().__init__(name)
-
-    def save(self, site):
-        super().save(site)
-        site.students.add_child(self)
+    user_type = "student"
 
 
 class UserFactory:
-    types = {"student": Student, "teacher": Teacher}
+    user_models = {"student": Student, "teacher": Teacher}
 
     @classmethod
-    def create(cls, user_name, user_type: str) -> Union[str, AbstractUser]:
-        try:
-            new_user = cls.types[user_type](user_name)
-        except AlreadyExistsError as e:
-            return e.text
+    def create(cls, site, user_type, username, password):
+        user_model = cls.user_models.get(user_type)
+
+        if not user_model:
+            raise ModelTypeError("Wrong user type")
+
+        if cls.check_user_exists(site, user_model, username):
+            raise AlreadyExistsError(
+                f"{user_type.title()} with username {username} already exists"
+            )
+
+        new_user = user_model(username, password)
         return new_user
+
+    @staticmethod
+    def check_user_exists(site, user_model, username):
+        for item in site.users:
+            if item.name == username and isinstance(item, user_model):
+                return True
