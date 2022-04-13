@@ -22,6 +22,8 @@ class AbstractCourse(CoursePrototypeMixin):
         self.id = None
         self.category = category
         self.name = name
+        self.students = []
+        self.teacher = None
 
     def save(self, site):
         site.courses.append(self)
