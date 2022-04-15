@@ -12,3 +12,5 @@ urlpatterns = [
     URL("/courses", include(courses_patterns)),
     URL("/users", include(users_patterns)),
 ]
+
+# lesson_8
