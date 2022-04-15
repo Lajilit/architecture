@@ -9,6 +9,7 @@ class AbstractUser:
         self.name = name
         self.password = password
         self.token = f"{self.name}{self.password}"
+        self.courses = set()
 
     def save(self, site):
         AbstractUser.count += 1
@@ -45,5 +46,5 @@ class UserFactory:
     @staticmethod
     def check_user_exists(site, user_model, username):
         for item in site.users:
-            if item.name == username and isinstance(item, user_model):
+            if item.name == username:
                 return True
