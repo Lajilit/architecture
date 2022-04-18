@@ -1,7 +1,7 @@
 import copy
 
 from categories.models import Category
-from framework.errors import ModelTypeError, AlreadyExistsError
+from framework.errors import ModelTypeError, AlreadyExistsError, NotExistsError
 
 
 class CoursePrototypeMixin:
@@ -22,12 +22,37 @@ class AbstractCourse(CoursePrototypeMixin):
         self.id = None
         self.category = category
         self.name = name
+        self.students = set()
+        self.teacher = None
 
     def save(self, site):
         site.courses.append(self)
         AbstractCourse.count += 1
         self.id = self.count
         self.category.add_course(self)
+
+    def add_user(self, user):
+        if user and user.user_type == "teacher":
+            if not self.teacher:
+                self.teacher = user
+            else:
+                raise AlreadyExistsError(
+                    f"This course already has a teacher: {self.teacher.name}"
+                )
+        elif user.user_type == "student":
+            self.students.add(user)
+
+    def remove_user(self, user):
+        if user and user.user_type == "teacher":
+            if self.teacher == user:
+                self.teacher = None
+            else:
+                raise NotExistsError(f"This course teacher is not {user.name}")
+        elif user.user_type == "student":
+            if user in self.students:
+                self.students.remove(user)
+            else:
+                raise NotExistsError("This user not in this course students list")
 
 
 class InteractiveCourse(AbstractCourse):

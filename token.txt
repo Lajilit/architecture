@@ -1,0 +1,1 @@
+admin        context.update({"title": f"Course {course.name} ({course.course_type})",                         "header": f"Course {course.name} ({course.course_type})",                         "course": course})

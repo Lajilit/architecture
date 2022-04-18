@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+    <div>
+        <h2>Category: {{ context.course.category.name }}</h2>
+        <h2>Course name: {{ context.course.name }}</h2>
+        <h3>Teacher: {{ context.course.teacher.name}}</h3>
+        <h3>Students:</h3>
+            <ul>
+                {% for student in context.course.students %}
+                <li>{{ student.name}}</li>
+                {% endfor %}
+            </ul>
+    </div>
+{% if context.user %}
+<form method="post">
+    <button type="submit">Add user</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -112,3 +112,49 @@ class CourseCloneView(View):
             context["success"] = f"{new_course.course_type.title()} course cloned"
 
         return Response(render_template(self.template, context=context))
+
+
+class CourseRetrieveView(View):
+    template = "courses/course_retrieve.html"
+
+    @staticmethod
+    def get_context(request):
+        context = {
+            "is_authorized": request.is_authorized,
+            "user": request.user,
+        }
+        return context
+
+    def get(self, request):
+        context = self.get_context(request)
+        course_id = int(request.params.get("course_id"))
+        course = site.get_course(course_id)
+        context.update(
+            {
+                "title": f"Course {course.name} ({course.course_type})",
+                "header": f"Course {course.name} ({course.course_type})",
+                "course": course,
+            }
+        )
+        return Response(render_template(self.template, context=context))
+
+    def post(self, request):
+        context = self.get_context(request)
+
+        course_id = int(request.params.get("course_id"))
+        course = site.get_course(course_id)
+        context.update(
+            {
+                "title": f"Course {course.name} ({course.course_type})",
+                "header": f"Course {course.name} ({course.course_type})",
+                "course": course,
+            }
+        )
+        try:
+            course.add_user(request.user)
+        except AlreadyExistsError as e:
+            context["error"] = e.text
+        else:
+            context["success"] = f"You added course {course.course_type.title()}"
+
+        return Response(render_template(self.template, context=context))
