@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<div>
+    {% if context.objects %}
+    <h2>Teachers</h2>
+    <ul>
+        {% for user in context.objects %}
+        {% if user.user_type == "teacher" %}
+        <li>{{user.name }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <h2>Students</h2>
+    <ul>
+        {% for user in context.objects %}
+        {% if user.user_type == "student" %}
+        <li>{{user.name }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Users not found</p>
+    {% endif %}
+</div>
+{% endblock %}

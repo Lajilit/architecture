@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}<</title>
+</head>
+
+<body>
+<header>
+    {% include "core/includes/is_authorized.html" %}
+    {% include "core/includes/menu.html" %}
+</header>
+{% if context.error %}
+{% include "core/includes/error.html" %}
+{% endif %}
+{% if context.success %}
+{% include "core/includes/success.html" %}
+{% else %}
+{% block content %}{% endblock %}
+{% endif %}
+</body>
+</html>

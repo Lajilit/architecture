@@ -1,19 +1,20 @@
-from wsgiref.simple_server import make_server
-
+from core.urls import urlpatterns
 from framework import Application
+from settings import SITE as site
+from settings import BASE_DIR
 
-from my_site.core.urls import urlpatterns
 
-
-def check_token(request, env):
-    token = env.get("HTTP_AUTHORIZATION")
+def check_token(request):
+    with open(f"{BASE_DIR}/token.txt", "r") as f:
+        token = f.read()
     if token:
-        request["is_authorized"] = True
+        request.is_authorized = True
+        request.user = site.get_user(token=token)
     else:
-        request["is_authorized"] = False
+        request.is_authorized = False
+    return request
 
 
 front_controllers = [check_token]
-
 
 application = Application(urlpatterns, front_controllers)

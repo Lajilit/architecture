@@ -5,17 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ context.title }}</title>
+    <title>Template not found</title>
 </head>
 <body>
-{% if context.has_token %}
-<p>Your token is ok</p>
-{% else %}
-<p>Your token is empty</p>
-{% endif %}
-<h1>
-    {{ context.text }}
-</h1>
-<p>{{ context.description }}</p>
+<p>Template {{ template_name }} not found</p>
 </body>
 </html>

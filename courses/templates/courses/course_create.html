@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<form method="post">
+    {% block clone %}
+    <div>
+        <label for="course_category">Course category</label>
+        <select id="course_category" name="course_category" required>
+            {% for category in context.categories %}
+            <option value={{category.object.id}}>{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="course_type">Course type</label>
+        <select id="course_type" name="course_type" required>
+            {% for course_type in context.course_types %}
+            <option value={{course_type}}>{{course_type}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="course_name">Course name</label>
+        <input type="text" id="course_name" name="course_name"
+               placeholder="Course name" required>
+    </div>
+    {% endblock %}
+    <button type="submit">Create course</button>
+</form>
+{% endblock %}

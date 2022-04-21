@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+{% block title %}{{ context.title }}{% endblock %}
+
+
+{% block content %}
+<h1>
+    {{ context.header }}
+</h1>
+<div>
+    {% if context.categories %}
+    <ul>
+        {% for category in context.categories %}
+        <li>{{category.name }}:
+            <ul>
+                {% for course in category.object.courses %}
+                <li>{{course.name }} ({{course.course_type}})</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Courses not found</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+

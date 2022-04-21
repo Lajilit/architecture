@@ -1,0 +1,25 @@
+{% extends "courses/course_create.html" %}
+{% block clone %}
+
+<div>
+    <input type="text" id="old_course_id" name="old_course_id"
+           readonly hidden value={{context.old_course.id}}>
+</div>
+<div>
+    <label for="course_category">Course category</label>
+    <select id="course_category" name="course_category" required>
+        {% for category in context.categories %}
+        {% if context.old_course.category == category.object %}
+            <option value={{category.object.id}} selected>{{category.name}}</option>
+        {% else %}}
+            <option value={{category.object.id}}>{{category.name}}</option>
+        {% endif %}}
+        {% endfor %}
+    </select>
+</div>
+<div>
+    <label for="course_name">Course name</label>
+    <input type="text" id="course_name" name="course_name"
+           value={{context.old_course.name}}>
+</div>
+{% endblock %}

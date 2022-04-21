@@ -1,0 +1,9 @@
+<div>
+    {% if context.is_authorized %}
+    <p>{{ context.user.name }}</p>
+    <a href="/users/logout">Log out</a>
+    {% else %}
+    <a href="/users/register">Register</a>
+    <a href="/users/login">Log in</a>
+    {% endif %}
+</div>
